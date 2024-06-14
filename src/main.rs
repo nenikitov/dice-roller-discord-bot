@@ -1,27 +1,11 @@
+mod command;
+
 use anyhow::Context as _;
-use serenity::async_trait;
-use serenity::model::channel::Message;
-use serenity::model::gateway::Ready;
+use poise::serenity_prelude as serenity;
 use serenity::prelude::*;
 use shuttle_runtime::SecretStore;
-use tracing::{error, info};
 
-struct Bot;
-
-#[async_trait]
-impl EventHandler for Bot {
-    async fn message(&self, ctx: Context, msg: Message) {
-        if msg.content == "!hello" {
-            if let Err(e) = msg.channel_id.say(&ctx.http, "world!").await {
-                error!("Error sending message: {:?}", e);
-            }
-        }
-    }
-
-    async fn ready(&self, _: Context, ready: Ready) {
-        info!("{} is connected!", ready.user.name);
-    }
-}
+use command::*;
 
 #[shuttle_runtime::main]
 async fn serenity(
@@ -35,8 +19,21 @@ async fn serenity(
     // Set gateway intents, which decides what events the bot will be notified about
     let intents = GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT;
 
+    let framework = poise::Framework::builder()
+        .options(poise::FrameworkOptions {
+            commands: vec![roll(), help()],
+            ..Default::default()
+        })
+        .setup(|ctx, _ready, framework| {
+            Box::pin(async move {
+                poise::builtins::register_globally(ctx, &framework.options().commands).await?;
+                Ok(Data {})
+            })
+        })
+        .build();
+
     let client = Client::builder(&token, intents)
-        .event_handler(Bot)
+        .framework(framework)
         .await
         .expect("Err creating client");
 
