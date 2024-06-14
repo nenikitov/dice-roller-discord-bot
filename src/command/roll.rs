@@ -3,6 +3,7 @@ use std::{
     str::FromStr,
 };
 
+use itertools::Itertools;
 use regex::Regex;
 
 use crate::command::*;
@@ -97,6 +98,20 @@ pub async fn roll(
     ctx: Context<'_>,
     #[description = "A dice to roll, space separated, might need to be quoted"] dice: Dice,
 ) -> Result {
-    ctx.say(format!("Rolling {dice:?}")).await?;
+    let rolls: Vec<_> = dice.0.iter().map(Die::roll).collect();
+
+    let sum: u16 = rolls.iter().map(|e| *e as u16).sum();
+    let sum_len = sum.to_string().len();
+
+    let table = std::iter::zip(&dice.0, &rolls)
+        .map(|(die, roll)| format!("{roll: >sum_len$} (d{})", die.sides))
+        .join("\n");
+
+    ctx.say(format!(
+        "```rust\n{table}\n{}\n{sum}```",
+        "-".repeat(sum_len)
+    ))
+    .await?;
+
     Ok(())
 }
