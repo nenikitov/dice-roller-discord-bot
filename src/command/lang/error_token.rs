@@ -10,7 +10,7 @@ pub type ParseNumberError = ParseError<ParseIntError>;
 #[derive(Debug, PartialEq)]
 pub enum ModifierCountError {
     Parse(ParseNumberError),
-    MoreThanDice { leave: NonZeroU8, count: NonZeroU8 },
+    MoreThanDice { take: NonZeroU8, count: NonZeroU8 },
 }
 
 impl Display for ModifierCountError {
@@ -20,8 +20,8 @@ impl Display for ModifierCountError {
             "{}",
             match self {
                 ModifierCountError::Parse(e) => format!("{e}"),
-                ModifierCountError::MoreThanDice { leave, count } =>
-                    format!("dice to leave ({leave}) cannot be more than dice thrown ({count})"),
+                ModifierCountError::MoreThanDice { take, count } =>
+                    format!("dice to leave ({take}) cannot be more than dice thrown ({count})"),
             }
         )
     }
