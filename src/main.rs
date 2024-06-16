@@ -1,3 +1,6 @@
+#[allow(unused)]
+#[deny(unused_imports)]
+
 mod command;
 
 use anyhow::Context as _;
