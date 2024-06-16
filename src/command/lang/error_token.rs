@@ -40,7 +40,7 @@ impl Display for ModifierErrorKind {
             f,
             "{}",
             match self {
-                ModifierErrorKind::Invalid => format!("Invalid modifier"),
+                ModifierErrorKind::Invalid => "Invalid modifier".to_string(),
                 ModifierErrorKind::Advantage(e) => format!("Advantage count: {e}"),
                 ModifierErrorKind::Disadvantage(e) => format!("Disadvantage count: {e}"),
             }
@@ -88,7 +88,7 @@ impl Display for TokenErrorKind {
             f,
             "{}",
             match self {
-                TokenErrorKind::Invalid => format!("Invalid token"),
+                TokenErrorKind::Invalid => "Invalid token".to_string(),
                 TokenErrorKind::Die(e) => format!("Die: {e}"),
                 TokenErrorKind::Constant(e) => format!("Constant: {e}"),
             }

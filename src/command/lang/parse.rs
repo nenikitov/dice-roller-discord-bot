@@ -166,6 +166,18 @@ impl FromStr for Token {
     }
 }
 
+impl FromStr for Tokens {
+    type Err = ParseTokenError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let tokens = s
+            .split_whitespace()
+            .map(|token| token.parse::<Token>())
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(Self(tokens))
+    }
+}
+
 #[cfg(test)]
 mod test {
     use std::num::{IntErrorKind, ParseIntError};
