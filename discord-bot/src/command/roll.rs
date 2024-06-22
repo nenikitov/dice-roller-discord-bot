@@ -1,5 +1,5 @@
-use lang::Tokens;
-use table::Table;
+// use lang::Tokens;
+// use table::Table;
 
 use crate::command::*;
 
@@ -14,18 +14,19 @@ use crate::command::*;
 #[poise::command(slash_command, prefix_command)]
 pub async fn roll(
     ctx: Context<'_>,
-    #[description = "What to roll, space separated"] tokens: Tokens,
+    //    #[description = "What to roll, space separated"] tokens: Tokens,
 ) -> Result {
-    let table: Table = tokens.into();
-
-    ctx.say(format!(
-        "\
-```rust
-{table}
-```
-"
-    ))
-    .await?;
+    //     let table: Table = tokens.into();
+    //
+    //     ctx.say(format!(
+    //         "\
+    // ```rust
+    // {table}
+    // ```
+    // "
+    //     ))
+    //     .await?;
+    ctx.say("Rolled").await?;
 
     Ok(())
 }

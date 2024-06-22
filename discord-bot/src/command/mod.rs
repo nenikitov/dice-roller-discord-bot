@@ -1,7 +1,5 @@
 mod help;
-mod lang;
 mod roll;
-mod table;
 
 pub struct Data;
 

@@ -1,13 +1,10 @@
-#[allow(unused)]
-#[deny(unused_imports)]
 mod command;
 
 use anyhow::Context as _;
+use command::*;
 use poise::serenity_prelude as serenity;
 use serenity::prelude::*;
 use shuttle_runtime::SecretStore;
-
-use command::*;
 
 #[shuttle_runtime::main]
 async fn serenity(
